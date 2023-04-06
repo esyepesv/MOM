@@ -1,52 +1,64 @@
-from concurrent import futures
-import grpc
-import sys
-sys.path.append('../')
-import message_pb2
-import message_pb2_grpc
+from Queue import Queue 
+from flask import Flask, jsonify, request
 
-from collections import deque
+queues = {}
 
-colaEntrada = deque()
-colaSalida = deque()
+"""
+test colas:
+q1 = Queue("cola1", "user1", "key1")
+q2 = Queue("cola2", "user2", "key2")
+queues[q1.get_name()] = q1
+queues[q2.get_name()] = q2
+queues["cola1"].queue.put("mensaje de prueba")
+"""
 
-class MessageServicer(message_pb2_grpc.MessageServiceServicer):
+app = Flask(__name__)
 
-    def Greet(self, request, context):     
-
-        response = message_pb2.MessageResponse()
-
-        colaEntrada.append(request.name)
-
-        print(colaEntrada)
-
-        send()
+@app.route('/')
+def home():
+    return "MOM server implementation"
 
 
-def listen():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    message_pb2_grpc.add_MessageServiceServicer_to_server(MessageServicer(), server)
-    server.add_insecure_port("[::]:50052")
-    server.start()
-    print("Hola, Soy El MOM")
-    server.wait_for_termination()
+#CRUD colas --------------------------------------------------------------------------------------
+@app.route('/getQueues', methods=['GET'])
+def getQueues():
+    response = []
+    for q_name in queues.keys():
+        response.append(q_name)
+    
+    return jsonify(response)
 
+@app.route('/createQueue', methods=['POST'])
+def createQueue():
+    data = request.json
+    queue_name = data['name']
+    queue_user = data['user']
+    queue_key = data['key']
+    
+    new_queue = Queue(queue_name, queue_user, queue_key)
+    queues[queue_name] = new_queue
+    
+    return jsonify({'message': f'Queue {queue_name} created successfully!'})
 
-def send():
-     with grpc.insecure_channel('localhost:50051') as channel:
-            
-            stub = message_pb2_grpc.MessageServiceStub(channel)
+@app.route('/updateQueue/<name>', methods=['PUT'])
+def updateQueue(name):
+    data = request.json
+    if name in queues:
+        queues[name].user = data['user']
+        queues[name].key = data['key']
+        return jsonify({'message': 'Queue updated successfully'})
+    else:
+        return jsonify({'error': 'Queue not found'})
 
-            response = stub.Greet(message_pb2.MessageRequest(name = colaEntrada.pop()))
+@app.route('/deleteQueue/<name>', methods=['DELETE'])
+def deleteQueue(name):
+    if name in queues:
+        del queues[name]
+        return jsonify({'message': 'Queue deleted successfully'})
+    else:
+        return jsonify({'error': 'Queue not found'})
 
-            response = message_pb2.MessageResponse()
+# ----------------------------------------------------------------------------------------------------------------------
 
-            colaSalida.append(response.greeting)
-
-            print("esto hay en la cola de salida: ", colaSalida)
-
-            return response
-
-
-if __name__ == "__main__":
-    listen()
+if __name__ == '__main__':
+    app.run()
