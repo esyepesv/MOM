@@ -8,15 +8,11 @@ from flask import Flask
 app = Flask(__name__)
 
 @app.route('/')
-
 def send():
     with grpc.insecure_channel('localhost:50052') as channel:
         stub = message_pb2_grpc.MessageServiceStub(channel)
         nombre = "Stiven"
         response = stub.Greet(message_pb2.MessageRequest(name = nombre))
-
-        while response == null:
-            time.sleep(1)
 
         print(response.greeting)
         return response.greeting
