@@ -2,51 +2,63 @@ from concurrent import futures
 import grpc
 import sys
 sys.path.append('../')
+import time
 import message_pb2
 import message_pb2_grpc
 
 from collections import deque
 
-colaEntrada = deque()
-colaSalida = deque()
-
 class MessageServicer(message_pb2_grpc.MessageServiceServicer):
 
-    def Greet(self, request, context):     
+    def __init__(self, colaEntrada):
+        self.colaEntrada = colaEntrada
 
+    def Greet(self, request, context):     
         response = message_pb2.MessageResponse()
 
-        colaEntrada.append(request.name)
+        self.colaEntrada.append(request.name)
 
-        print(colaEntrada)
+        print(self.colaEntrada)
 
-        send()
+        response = run_send(self.colaEntrada)
+
+        print("Esta es la respuesta: ",response)
+
+        #response.greeting = "Hello, {}!".format(request.name)
+
+        return response
 
 
-def listen():
+def run_server():
+    colaEntrada = deque()
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    message_pb2_grpc.add_MessageServiceServicer_to_server(MessageServicer(), server)
+    message_pb2_grpc.add_MessageServiceServicer_to_server(MessageServicer(colaEntrada), server)
     server.add_insecure_port("[::]:50052")
-    server.start()
     print("Hola, Soy El MOM")
-    server.wait_for_termination()
+    server.start()
+
+    def handle_messages(servicer):
+        while True:
+            if len(servicer.colaEntrada) > 0:
+                mensaje = servicer.colaEntrada.popleft()
+                # procesar el mensaje como sea necesario
+                # crear una respuesta usando message_pb2.MessageResponse()
+                # enviar la respuesta a través del contexto del cliente
+            else:
+                time.sleep(1)
+
+    handle_messages(MessageServicer(colaEntrada))
 
 
-def send():
-     with grpc.insecure_channel('localhost:50051') as channel:
-            
+def run_send(colaEntrada):
+    if len(colaEntrada) > 0:
+        with grpc.insecure_channel('localhost:50051') as channel:
             stub = message_pb2_grpc.MessageServiceStub(channel)
-
-            response = stub.Greet(message_pb2.MessageRequest(name = colaEntrada.pop()))
-
-            response = message_pb2.MessageResponse()
-
-            colaSalida.append(response.greeting)
-
-            print("esto hay en la cola de salida: ", colaSalida)
-
-            return response
-
+            mensaje = colaEntrada.pop()
+            response = stub.Greet(message_pb2.MessageRequest(name = mensaje))
+            return response.greeting
+    else:
+        run_server() 
 
 if __name__ == "__main__":
-    listen()
+    run_server()
