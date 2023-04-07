@@ -21,7 +21,7 @@ class MessageServicer(message_pb2_grpc.MessageServiceServicer):
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     message_pb2_grpc.add_MessageServiceServicer_to_server(MessageServicer(), server)
-    server.add_insecure_port("[::]:50051")
+    server.add_insecure_port("[::]:50052")
     print("Hola, Soy El Server")
     server.start()
     server.wait_for_termination()
