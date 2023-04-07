@@ -39,7 +39,7 @@ def service1():
         return jsonify({'message': f'Queue {name} does not exist'})
     
     queues[name].queue.put(message)
-    asyncio.create_task(send(queues[name]))
+    send(queues[name])
     return jsonify({'message': f'{message} on queue'})
 
 # respuesta servicio 1
@@ -59,18 +59,12 @@ def getService1():
 
 
 #enviar y recibir al servicio
-async def send(queue):
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    try:
-        with grpc.aio.insecure_channel('localhost:50052') as channel:
+def send(queue):
+        with grpc.insecure_channel('localhost:50052') as channel:
             stub = message_pb2_grpc.MessageServiceStub(channel)
             message = queue.queue.get()
-            response = await stub.Greet(message_pb2.MessageRequest(name=message))
+            response = stub.Greet(message_pb2.MessageRequest(name=message))
             queues["cola2"].queue.put(response.greeting)
-    finally:
-        loop.close()
-
 
 
 
