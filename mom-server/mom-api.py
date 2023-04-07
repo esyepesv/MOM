@@ -1,22 +1,77 @@
 from Queue import Queue 
 from flask import Flask, jsonify, request
+import grpc
+import sys
+sys.path.append('../')
+import message_pb2
+import message_pb2_grpc
+import asyncio
+
 
 queues = {}
 
-"""
-test colas:
+#test colas:
 q1 = Queue("cola1", "user1", "key1")
 q2 = Queue("cola2", "user2", "key2")
 queues[q1.get_name()] = q1
 queues[q2.get_name()] = q2
-queues["cola1"].queue.put("mensaje de prueba")
-"""
+#queues["cola1"].queue.put("mensaje de prueba")
+
 
 app = Flask(__name__)
 
 @app.route('/')
 def home():
     return "MOM server implementation"
+
+#metos de los servicios --------------------------------------------------------------------------------------------
+
+#solicitar servicio 1
+@app.route('/service1', methods=['GET'])
+def service1():
+    data = request.json
+    name = data['queue_name']
+    user = data['user']
+    key = data['key']
+    message = data['message']
+
+    if name not in queues:
+        return jsonify({'message': f'Queue {name} does not exist'})
+    
+    queues[name].queue.put(message)
+    asyncio.create_task(send(queues[name]))
+    return jsonify({'message': f'{message} on queue'})
+
+# respuesta servicio 1
+@app.route('/getService1', methods=['GET'])
+def getService1():
+    data = request.json
+    name = data['queue_name']
+    user = data['user']
+    key = data['key']
+
+    if queues[name].queue.empty():
+        return jsonify('not response')
+    else:
+        response = queues[name].queue.get()
+        return jsonify(response)
+# -----------------------------------------------------------------------------------------------
+
+
+#enviar y recibir al servicio
+async def send(queue):
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    try:
+        with grpc.aio.insecure_channel('localhost:50052') as channel:
+            stub = message_pb2_grpc.MessageServiceStub(channel)
+            message = queue.queue.get()
+            response = await stub.Greet(message_pb2.MessageRequest(name=message))
+            queues["cola2"].queue.put(response.greeting)
+    finally:
+        loop.close()
+
+
 
 
 #CRUD colas --------------------------------------------------------------------------------------
