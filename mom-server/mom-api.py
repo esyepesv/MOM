@@ -1,5 +1,5 @@
 from Queue import Queue 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, make_response
 import grpc
 import sys
 sys.path.append('../')
@@ -27,28 +27,49 @@ def home():
 #metos de los servicios --------------------------------------------------------------------------------------------
 
 #solicitar servicio 1
-@app.route('/service1', methods=['GET'])
-def service1():
+@app.route('/service/<service_number>', methods=['GET'])
+def service(service_number):
     data = request.json
     name = data['queue_name']
     user = data['user']
     key = data['key']
     message = data['message']
 
+    queue = queues[name]
+
+    #verificar que existe la cola y se tiene acceso
     if name not in queues:
-        return jsonify({'message': f'Queue {name} does not exist'})
-    
-    queues[name].queue.put(message)
-    asyncio.create_task(send(queues[name]))
+        return make_response(jsonify({'message': f'Queue {name} does not exist'}), 404)
+    elif user != queue.get_user() or key != queue.get_key():
+        return make_response(jsonify({'message': f'you do not have access to Queue {name}'}), 403)
+
+    #encolar mensaje
+    queue.queue.put(message)
+
+    port_mappings = {
+    '1': 'localhost:50052',
+    '2': 'localhost:50053',
+    }
+
+    if service_number in port_mappings:
+        send(queues[name], port_mappings[service_number])
+    else:
+        return make_response(jsonify({'message': f'Service {service_number} not found'}), 404)
+
     return jsonify({'message': f'{message} on queue'})
 
-# respuesta servicio 1
-@app.route('/getService1', methods=['GET'])
+
+# respuesta servicios
+@app.route('/getService', methods=['GET'])
 def getService1():
     data = request.json
     name = data['queue_name']
     user = data['user']
     key = data['key']
+
+    queue = queues[name]
+    if user != queue.get_user() or key != queue.get_key():
+        return make_response(jsonify({'message': f'you do not have access to Queue {name}'}), 403)
 
     if queues[name].queue.empty():
         return jsonify('not response')
@@ -59,18 +80,15 @@ def getService1():
 
 
 #enviar y recibir al servicio
-async def send(queue):
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    try:
-        with grpc.aio.insecure_channel('localhost:50052') as channel:
+def send(queue, puerto):
+
+    if not queues[queue.get_name()].queue.empty():
+        # 'localhost:50052'
+        with grpc.insecure_channel(puerto) as channel:
             stub = message_pb2_grpc.MessageServiceStub(channel)
             message = queue.queue.get()
-            response = await stub.Greet(message_pb2.MessageRequest(name=message))
-            queues["cola2"].queue.put(response.greeting)
-    finally:
-        loop.close()
-
+            response = stub.Greet(message_pb2.MessageRequest(name=message))
+            queues[queue.get_name()].queue.put(response.greeting)
 
 
 
@@ -107,6 +125,10 @@ def updateQueue(name):
 
 @app.route('/deleteQueue/<name>', methods=['DELETE'])
 def deleteQueue(name):
+    queue = queues[name]
+    if user != queue.get_user() or key != queue.get_key():
+        return make_response(jsonify({'message': f'you do not have access to Queue {name}'}), 403)
+
     if name in queues:
         del queues[name]
         return jsonify({'message': 'Queue deleted successfully'})
