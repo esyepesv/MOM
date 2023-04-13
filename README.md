@@ -1,15 +1,17 @@
-# info de la materia: STxxxx <nombre>
-#
-# Estudiante(s): nombre, email-eafit
-#
-# Profesor: nombre, email-eafit
-#
-# <para borrar: EL OBJETIVO DE ESTA DOCUMENTACÍON ES QUE CUALQUIER LECTOR CON EL REPO, EN ESPECIAL EL PROFESOR, ENTIENDA EL ALCANCE DE LO DESARROLLADO Y QUE PUEDA REPRODUCIR SIN EL ESTUDIANTE EL AMBIENTE DE DESARROLLO Y EJECUTAR Y USAR LA APLICACIÓN SIN PROBLEMAS>
+# info de la materia: ST0263 Topicos especiales en telematica
 
-# <para borrar: renombre este archivo a README.md cuando lo vaya a usar en un caso específico>
+## Estudiantes: 
+ - Stiven Yepes Vanegas, esyepesv@eafit.educo
+ - Juan Pablo Cortes Gonzalez, jpcortesg@eafit.edu.co
+ - Yhilmar Andres Chaverra, yachaverrc@eafit.edu.co
 
-# nombre del proyecto, lab o actividad
+## Profesor: 
+- Edwin Nelson Montoya Munera, emontoya@eafit.edu.co
+
 #
+# Proyecto 1: Diseño e Implementación de un Middleware que Implemente un Servicio de Mensajería Asincrónica entre Aplicaciones
+#
+
 # 1. breve descripción de la actividad
 #
 <texto descriptivo>
