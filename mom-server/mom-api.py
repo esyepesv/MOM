@@ -6,6 +6,7 @@ sys.path.append('../')
 import message_pb2
 import message_pb2_grpc
 import asyncio
+import jsonpickle
 
 
 queues = {}
@@ -15,7 +16,13 @@ q1 = Queue("cola1", "user1", "key1")
 q2 = Queue("cola2", "user2", "key2")
 queues[q1.get_name()] = q1
 queues[q2.get_name()] = q2
-#queues["cola1"].queue.put("mensaje de prueba")
+queues["cola1"].queue.put("mensaje de prueba")
+queues["cola1"].queue.put("mensaje 2 de prueba")
+queues["cola1"].queue.put("mensaje 3 de prueba")
+
+queues["cola2"].queue.put("mensaje de prueba 2")
+queues["cola2"].queue.put("mensaje 2 de prueba 2")
+queues["cola2"].queue.put("mensaje 3 de prueba 2")
 
 
 app = Flask(__name__)
@@ -23,6 +30,23 @@ app = Flask(__name__)
 @app.route('/')
 def home():
     return "MOM server implementation"
+
+
+#metodos comunicacion con los servicios ----------------------------------------------------------------
+
+@app.route('/getRequest', methods=['GET'])
+def getRequest():
+    if queues["cola1"].queue.empty():
+        return make_response(jsonify({'message: empty'}), 204)
+    else:
+        queue_contents = []
+        while not queues["cola1"].queue.empty():
+            
+            queue_contents.append(str(queues["cola1"].queue.get()))
+        return make_response(jsonify({'queue_contents': queue_contents}), 200)
+
+
+
 
 #metos de los servicios --------------------------------------------------------------------------------------------
 

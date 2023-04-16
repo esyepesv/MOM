@@ -14,7 +14,7 @@ class MessageServicer(message_pb2_grpc.MessageServiceServicer):
 
         response = message_pb2.MessageResponse()
 
-        response.greeting = "Hello, {}!".format(request.name)
+        response.greeting = "Hello, {}!, I am service 1".format(request.name)
         return response
 
 
