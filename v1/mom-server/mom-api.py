@@ -32,7 +32,7 @@ def home():
     return "MOM server implementation"
 
 
-#metodos comunicacion con los servicios ----------------------------------------------------------------
+# metodos comunicacion con los servicios ------------------------------------------------------------------------
 
 @app.route('/getRequest', methods=['GET'])
 def getRequest():
@@ -44,7 +44,6 @@ def getRequest():
             
             queue_contents.append(str(queues["cola1"].queue.get()))
         return make_response(jsonify({'queue_contents': queue_contents}), 200)
-
 
 
 
