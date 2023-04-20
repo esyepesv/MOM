@@ -13,17 +13,51 @@
 #
 
 # 1. breve descripción de la actividad
-#
-<texto descriptivo>
+Este proyecto consiste en la implementacion de un MOM (Middleware Orientado a Mensajes) el cual debe permitir la conexion de multiples clientes a estos servicios utilizando comunicacion asincrona, este MOM utiliza colas para gestionas los mensajes Request - Response y permitir a estos servicios usar la metodologia - Publicador - Suscriptor.
+
 ## 1.1. Que aspectos cumplió o desarrolló de la actividad propuesta por el profesor (requerimientos funcionales y no funcionales)
+
+Implemetando el proyecto pudimos desarrollar distintas funcionalidades y requisitos asignados como el profesor:
+- Se implemento la autenticacion de usuarios
+- CRUD de colas segun el usuario y sus credenciales
+- Mecanismo de recepción de mensajes en modo pull o push/eventos
+- Persistencia de datos
+- Tolerancia a fallos (Uso de archivo .txt)
+- interaccion sincronica / asincronica
+- Seguridad (Uso de credenciales para los mensajes)
 
 ## 1.2. Que aspectos NO cumplió o desarrolló de la actividad propuesta por el profesor (requerimientos funcionales y no funcionales)
 
+En este proyecto tuvimos un alcance limitado en el cual omitimos algunos requisitos para el cumplimiento de otros y la entrega de un MVP, por lo tanto estos requisitos son:
+
+- Particionamiento
+- Replicacion
+- Encriptacion
+- Manejo de sesion
+
 # 2. información general de diseño de alto nivel, arquitectura, patrones, mejores prácticas utilizadas.
+
+![Diagrama Topicos](https://user-images.githubusercontent.com/60229713/233501638-981862ca-54f8-42c3-b05d-748607ec0475.png)
+
+La arquitectura de nuestro proyecto consiste en un MOM dividido en 2 servidores conectados, una API implementada en Flask, la cual realizara la conexion de los clientes, y un servidor GRPC el cual es el encargado de hacer la comunicacion efectiva con los servicios, en este caso la persistencia de datos al ser manejada a traves de un archivo .txt el cual guarda la informacion de los mensajes de cada servicio y tambien la informacion de las colas.
 
 # 3. Descripción del ambiente de desarrollo y técnico: lenguaje de programación, librerias, paquetes, etc, con sus numeros de versiones.
 
+lenguaje de programación: Python 3.8.10
+
+librerias: os, Flask, jsonify, grpc, sys, pika, uuid, futures.
+
 ## como se compila y ejecuta.
+
+Para la ejecucion del proyecto, utilizamos el comando python <filename> para correr los archivos correspondientes, a continuacion explicamos cuales archivos ejecutar:
+
+- GRPC.py para correr el servidor grpc dentro del MOM
+- FLASK.py para la ejecucion la API Flask dentro del MOM
+- Service1.py para ejecutar el primer servicio
+- Service2.py para ejecutar el segundo servicio
+
+para hacer las peticiones a a traves de la API usamos un cliente Postman el cual envia peticiones http con las credenciales correspondientes.
+
 ## detalles del desarrollo.
 ## detalles técnicos
 ## descripción y como se configura los parámetros del proyecto (ej: ip, puertos, conexión a bases de datos, variables de ambiente, parámetros, etc)
