@@ -56,7 +56,7 @@ Para la ejecución del proyecto, utilizamos el comando `python <filename>` para 
 
 Para hacer las peticiones a través de la API, usamos un cliente Postman que envía peticiones HTTP con las credenciales correspondientes.
 
-## detalles del desarrollo.
+### detalles del desarrollo.
 
 ### detalles técnicos
 
@@ -69,6 +69,27 @@ En el desarrollo del proyecto, hicimos uso de múltiples conceptos aprendidos en
 ![Screenshot_20230421_071242](https://user-images.githubusercontent.com/60229713/233635097-99d039d9-7cc6-4ae7-82d8-90ea27a8285d.png)
 
 ## opcionalmente - si quiere mostrar resultados o pantallazos 
+
+### Crete Queue
+![WhatsApp Image 2023-04-21 at 07 08 09](https://user-images.githubusercontent.com/60229713/233665106-e0174649-1e68-4dfa-b4e1-7ed647914fdf.jpeg)
+
+### Update Queue
+![WhatsApp Image 2023-04-21 at 07 10 17](https://user-images.githubusercontent.com/60229713/233665836-5b564829-43e1-4ebd-a96c-caed12ef5029.jpeg)
+
+### Delete Queue
+![WhatsApp Image 2023-04-21 at 07 11 19](https://user-images.githubusercontent.com/60229713/233665848-7cdf0335-510e-45d2-a436-37f30aa1f144.jpeg)
+
+### Get Queue
+![WhatsApp Image 2023-04-21 at 07 12 57](https://user-images.githubusercontent.com/60229713/233665871-9806f558-7c70-4db3-92ce-8c862fbe92dc.jpeg)
+
+### Send Message
+![WhatsApp Image 2023-04-21 at 07 14 25](https://user-images.githubusercontent.com/60229713/233665879-ed16a4ed-076f-42b9-af41-c5c74ea9590a.jpeg)
+
+### Get Message
+![WhatsApp Image 2023-04-21 at 07 16 23](https://user-images.githubusercontent.com/60229713/233665891-681f9dac-78d7-40ed-9ccf-eedc09bad9ba.jpeg)
+
+### Persistence
+![WhatsApp Image 2023-04-21 at 07 19 31](https://user-images.githubusercontent.com/60229713/233665904-b68b87d5-feed-4dab-bc6c-8d653e3d4d34.jpeg)
 
 
 
