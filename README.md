@@ -10,10 +10,10 @@
 
 # Proyecto 1: Diseño e Implementación de un Middleware que Implemente un Servicio de Mensajería Asincrónica entre Aplicaciones
 
-## 1. breve descripción de la actividad
+## breve descripción de la actividad
 Este proyecto consiste en la implementación de un MOM (Middleware Orientado a Mensajes) el cual debe permitir la conexión de múltiples clientes a estos servicios utilizando comunicación asíncrona. Este MOM utiliza colas para gestionar los mensajes Request-Response y permitir a estos servicios usar la metodología - Publicador - Suscriptor.
 
-## 1.1. Qué aspectos cumplió o desarrolló de la actividad propuesta por el profesor (requerimientos funcionales y no funcionales)
+## Qué aspectos cumplió o desarrolló de la actividad propuesta por el profesor (requerimientos funcionales y no funcionales)
 
 Implementando el proyecto pudimos desarrollar distintas funcionalidades y requisitos asignados como el profesor:
 - Se implementó la autenticación de usuarios
@@ -24,7 +24,7 @@ Implementando el proyecto pudimos desarrollar distintas funcionalidades y requis
 - Interacción sincrónica / asincrónica
 - Seguridad (Uso de credenciales para los mensajes)
 
-## 1.2. Qué aspectos NO cumplió o desarrolló de la actividad propuesta por el profesor (requerimientos funcionales y no funcionales)
+## Qué aspectos NO cumplió o desarrolló de la actividad propuesta por el profesor (requerimientos funcionales y no funcionales)
 
 En este proyecto tuvimos un alcance limitado en el cual omitimos algunos requisitos para el cumplimiento de otros y la entrega de un MVP, por lo tanto, estos requisitos son:
 
@@ -33,13 +33,13 @@ En este proyecto tuvimos un alcance limitado en el cual omitimos algunos requisi
 - Encriptación
 - Manejo de sesión
 
-# 2. información general de diseño de alto nivel, arquitectura, patrones, mejores prácticas utilizadas.
+## información general de diseño de alto nivel, arquitectura, patrones, mejores prácticas utilizadas.
 
 ![Diagrama Topicos (1)](https://user-images.githubusercontent.com/60229713/233505258-a6a198ed-28b1-4194-8ed2-f2d711ca5bd0.png)
 
 La arquitectura de nuestro proyecto consiste en un MOM dividido en 2 servidores enlazados, una API implementada en Flask, la cual realizará la conexión de los clientes, y un servidor GRPC el cual es el encargado de hacer la comunicación efectiva con los servicios, en este caso, la persistencia de datos al ser manejada a través de un archivo .txt el cual guarda la información de los mensajes de cada servicio y también la información de las colas.
 
-# 3. Descripción del ambiente de desarrollo y técnico: lenguaje de programación, librerías, paquetes, etc, con sus números de versiones.
+## Descripción del ambiente de desarrollo y técnico: lenguaje de programación, librerías, paquetes, etc, con sus números de versiones.
 
 Lenguaje de programación: Python 3.8.10
 
@@ -56,13 +56,13 @@ Para la ejecución del proyecto, utilizamos el comando `python <filename>` para 
 
 Para hacer las peticiones a través de la API, usamos un cliente Postman que envía peticiones HTTP con las credenciales correspondientes.
 
-### detalles del desarrollo.
+## detalles del desarrollo.
 
-### detalles técnicos
+## detalles técnicos
 
 En el desarrollo del proyecto, hicimos uso de múltiples conceptos aprendidos en clase sobre la comunicación usando Middleware. Utilizamos los conceptos de la comunicación GRCP como protocolo sincrónico, utilizamos conceptos de memoria compartida para permitir al API y al servidor GRPC la comunicación y el almacenamiento de los distintos mensajes Request-Response en el flujo del programa. Se utilizó la nube de Google Cloud para el posterior despliegue en una máquina virtual EC2, además de un entorno virtual de Python para la ejecución de cada proceso dentro de la instancia.
 
-### descripción y cómo se configura los parámetros del proyecto
+## descripción y cómo se configura los parámetros del proyecto
 
 ## opcional - detalles de la organización del código por carpetas o descripción de algún archivo. (ESTRUCTURA DE DIRECTORIOS Y ARCHIVOS IMPORTANTE DEL PROYECTO, comando 'tree' de linux)
 
@@ -72,22 +72,16 @@ En el desarrollo del proyecto, hicimos uso de múltiples conceptos aprendidos en
 
 ### Crete Queue
 ![WhatsApp Image 2023-04-21 at 07 08 09](https://user-images.githubusercontent.com/60229713/233665106-e0174649-1e68-4dfa-b4e1-7ed647914fdf.jpeg)
-
 ### Update Queue
 ![WhatsApp Image 2023-04-21 at 07 10 17](https://user-images.githubusercontent.com/60229713/233665836-5b564829-43e1-4ebd-a96c-caed12ef5029.jpeg)
-
 ### Delete Queue
 ![WhatsApp Image 2023-04-21 at 07 11 19](https://user-images.githubusercontent.com/60229713/233665848-7cdf0335-510e-45d2-a436-37f30aa1f144.jpeg)
-
 ### Get Queue
 ![WhatsApp Image 2023-04-21 at 07 12 57](https://user-images.githubusercontent.com/60229713/233665871-9806f558-7c70-4db3-92ce-8c862fbe92dc.jpeg)
-
 ### Send Message
 ![WhatsApp Image 2023-04-21 at 07 14 25](https://user-images.githubusercontent.com/60229713/233665879-ed16a4ed-076f-42b9-af41-c5c74ea9590a.jpeg)
-
 ### Get Message
 ![WhatsApp Image 2023-04-21 at 07 16 23](https://user-images.githubusercontent.com/60229713/233665891-681f9dac-78d7-40ed-9ccf-eedc09bad9ba.jpeg)
-
 ### Persistence
 ![WhatsApp Image 2023-04-21 at 07 19 31](https://user-images.githubusercontent.com/60229713/233665904-b68b87d5-feed-4dab-bc6c-8d653e3d4d34.jpeg)
 
