@@ -37,7 +37,7 @@ En este proyecto tuvimos un alcance limitado en el cual omitimos algunos requisi
 
 # 2. información general de diseño de alto nivel, arquitectura, patrones, mejores prácticas utilizadas.
 
-![Diagrama Topicos](https://user-images.githubusercontent.com/60229713/233501638-981862ca-54f8-42c3-b05d-748607ec0475.png)
+![Diagrama Topicos (1)](https://user-images.githubusercontent.com/60229713/233505258-a6a198ed-28b1-4194-8ed2-f2d711ca5bd0.png)
 
 La arquitectura de nuestro proyecto consiste en un MOM dividido en 2 servidores conectados, una API implementada en Flask, la cual realizara la conexion de los clientes, y un servidor GRPC el cual es el encargado de hacer la comunicacion efectiva con los servicios, en este caso la persistencia de datos al ser manejada a traves de un archivo .txt el cual guarda la informacion de los mensajes de cada servicio y tambien la informacion de las colas.
 
@@ -59,6 +59,9 @@ Para la ejecucion del proyecto, utilizamos el comando python <filename> para cor
 para hacer las peticiones a a traves de la API usamos un cliente Postman el cual envia peticiones http con las credenciales correspondientes.
 
 ## detalles del desarrollo.
+
+En el desarrollo 
+
 ## detalles técnicos
 ## descripción y como se configura los parámetros del proyecto (ej: ip, puertos, conexión a bases de datos, variables de ambiente, parámetros, etc)
 ## opcional - detalles de la organización del código por carpetas o descripción de algún archivo. (ESTRUCTURA DE DIRECTORIOS Y ARCHIVOS IMPORTANTE DEL PROYECTO, comando 'tree' de linux)
