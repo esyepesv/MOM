@@ -65,6 +65,10 @@ En el desarrollo del proyecto, hicimos uso de múltiples conceptos aprendidos en
 ### descripción y cómo se configura los parámetros del proyecto
 
 ## opcional - detalles de la organización del código por carpetas o descripción de algún archivo. (ESTRUCTURA DE DIRECTORIOS Y ARCHIVOS IMPORTANTE DEL PROYECTO, comando 'tree' de linux)
-## 
+
+![Screenshot_20230421_071242](https://user-images.githubusercontent.com/60229713/233635097-99d039d9-7cc6-4ae7-82d8-90ea27a8285d.png)
+
 ## opcionalmente - si quiere mostrar resultados o pantallazos 
+
+
 
